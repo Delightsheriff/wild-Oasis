@@ -38,36 +38,25 @@ const FilterButton = styled.button`
 //filtering is done by setting the search param "discount" to "all", "no-discount" or "with-discount"
 //filtering the cabins data from the backend
 
-//making the filter component reusable by passing the filterField and options as props
-//filterField is the search param to be set
-//options is an array of objects with label and value properties
-
-function Filter({ filterField, options }) {
+function Filter() {
   // useSearchParams is a custom hook that returns an object with a set method to update the search params
   // searchParams.set("discount", value) sets the search param "discount" to the value passed
   const [searchParams, setSearchParams] = useSearchParams();
-  //current filter is to get the current value of the search param
-  const currentFilter = searchParams.get(filterField) || options[0].value;
 
   function handleClick(value) {
-    searchParams.set(filterField, value);
+    searchParams.set("discount", value);
     setSearchParams(searchParams);
   }
 
   return (
     <StyledFilter>
-      {/* //mapping over the options array to display the buttons */}
-      {options.map((option) => (
-        <FilterButton
-          key={option.value}
-          onClick={() => handleClick(option.value)}
-          active={option.value === currentFilter}
-          //disabling the button if the option value is the same as the current filter
-          disabled={option.value === currentFilter}
-        >
-          {option.label}
-        </FilterButton>
-      ))}
+      <FilterButton onClick={() => handleClick("all")}>All</FilterButton>
+      <FilterButton onClick={() => handleClick("no-discount")}>
+        No Discount
+      </FilterButton>
+      <FilterButton onClick={() => handleClick("with-discount")}>
+        With Discount
+      </FilterButton>
     </StyledFilter>
   );
 }
